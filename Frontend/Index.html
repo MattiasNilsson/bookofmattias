@@ -14,7 +14,7 @@
 				resourcePath + 'SlotImages/seven.png',
 				resourcePath + 'SlotImages/watermelon.png'
 			];
-			var renderer = PIXI.autoDetectRenderer(800, 600,{backgroundColor : 0x1099bb});
+			var renderer = PIXI.autoDetectRenderer(800, 600, {backgroundColor : 0x1099bb});
 			document.body.appendChild(renderer.view);
 
 			// create the root of the scene graph
@@ -88,23 +88,8 @@
 			 * @param eventData
 			 */
 			function onPlayNowClick(eventData) {
-				generateLoadingImagesForReels();
 				getSpins();
-				//animate();
-				console.log(eventData);
-
-                updateBankroll();
-			}
-
-			/**
-			 * Generate loading images for reels
-			 */
-			function generateLoadingImagesForReels() {
-				//reelOneTexture = PIXI.Texture.fromImage(resourcePath + 'SlotImages/preloader.gif');
-				//reelOne = new PIXI.Sprite(reelOneTexture);
-				//stage.addChild(reelOne);
-				//stage.worldTransform();
-				//animate();
+				updateBankroll();
 			}
 
 			/**
@@ -115,7 +100,13 @@
 					url: '../index.php/spin'
 				}).done(function(data) {
 					if (data) {
-						console.log(data.reels);
+						var reels = data.reels,
+							updatedReelOneTexture = PIXI.Texture.fromImage(slotImages[reels[0]]),
+							updatedReelTwoTexture = PIXI.Texture.fromImage(slotImages[reels[1]]),
+							updatedReelThreeTexture = PIXI.Texture.fromImage(slotImages[reels[2]]);
+						reelOne.texture = updatedReelOneTexture;
+						reelTwo.texture = updatedReelTwoTexture;
+						reelThree.texture = updatedReelThreeTexture;
 					}
 				});
 			}
@@ -127,20 +118,20 @@
 				return array[Math.floor(Math.random() * numberOfValuesInReel)];
 			}
 
-            /**
-             * Get the bank roll amount
-             */
-            function updateBankroll() {
-                $.ajax({
-                    type: 'GET',
-                    url: '../index.php/bank',
-                    async: false,
-                    dataType: "json",
-                    success: function(data){
-                        amount.text = data['bank'];
-                    }
-                });
-            }
+			/**
+			 * Get the bank roll amount
+			 */
+			function updateBankroll() {
+				$.ajax({
+					type: 'GET',
+					url: '../index.php/bank',
+					async: false,
+					dataType: "json",
+					success: function(data){
+						amount.text = 'Amount: ' + data['bank'];
+					}
+				});
+			}
 
 			/**
 			 * Function to handle the different z-index changes
