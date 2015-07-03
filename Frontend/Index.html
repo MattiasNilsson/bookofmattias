@@ -218,6 +218,25 @@
 			}
 
 			/**
+			 * Get the spin history
+			 */
+			function checkSpinHistory() {
+				$.ajax({
+					url: '../index.php/spin/history'
+				}).done(function(data) {
+					if (data.spin.reels) {
+						var reels = data.spin.reels,
+							updatedReelOneTexture = PIXI.Texture.fromImage(slotImages[reels[0]]),
+							updatedReelTwoTexture = PIXI.Texture.fromImage(slotImages[reels[1]]),
+							updatedReelThreeTexture = PIXI.Texture.fromImage(slotImages[reels[2]]);
+						reelOne.texture = updatedReelOneTexture;
+						reelTwo.texture = updatedReelTwoTexture;
+						reelThree.texture = updatedReelThreeTexture;
+					}
+				});
+			}
+
+			/**
 			 * Function to handle the different z-index changes
 			 */
 			stage.updateLayersOrder = function() {
@@ -231,6 +250,7 @@
 			stage.updateLayersOrder();
 
 			$(function() {
+				checkSpinHistory();
 				updateBankroll();
                 backgroundSound = new Howl({
                     urls: ['../Resources/Public/Sounds/background.mp3']
