@@ -158,7 +158,12 @@
 						reelTwo.texture = updatedReelTwoTexture;
 						reelThree.texture = updatedReelThreeTexture;
 
-						if (data.won > 0) {
+						if (data.won > 0 && data.won < 5) {
+							startWinAnimation()
+							setTimeout(function() {
+								stopWinAnimation();
+							}, 3000);
+						} else if (data.won >= 5) {
 							startWinAnimation()
 							setTimeout(function() {
 								stopWinAnimation();
