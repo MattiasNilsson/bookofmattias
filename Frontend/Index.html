@@ -8,11 +8,11 @@
 			var numberOfValuesInReel = 5;
 			var resourcePath = '../Resources/Public/Images/';
 			var slotImages = [
-				resourcePath + 'SlotImages/bar.png',
 				resourcePath + 'SlotImages/cherry.png',
+				resourcePath + 'SlotImages/watermelon.png',
 				resourcePath + 'SlotImages/clock.png',
-				resourcePath + 'SlotImages/seven.png',
-				resourcePath + 'SlotImages/watermelon.png'
+				resourcePath + 'SlotImages/bar.png',
+				resourcePath + 'SlotImages/seven.png'
 			];
 			var renderer = PIXI.autoDetectRenderer(800, 600, {backgroundColor : 0x1099bb});
 			document.body.appendChild(renderer.view);
@@ -162,7 +162,7 @@
 							startWinAnimation()
 							setTimeout(function() {
 								stopWinAnimation();
-							}, 3000);
+							}, 10000);
 						}
 					}
 				});
