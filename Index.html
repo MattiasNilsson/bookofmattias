@@ -10,28 +10,44 @@
 			// create the root of the scene graph
 			var stage = new PIXI.Container();
 
-			// create a texture from an image path
-			var texture = PIXI.Texture.fromImage('Resources/Public/Images/jackpot-slot-machine.jpg');
+			// Slot machine background button
+			var slotMachineBackgroundTexture = PIXI.Texture.fromImage('Resources/Public/Images/slot-machine-background.png');
+			var slotMachineBackground = new PIXI.Sprite(slotMachineBackgroundTexture);
+			slotMachineBackground.position.x = 165;
+			slotMachineBackground.position.y = 100;
 
-			// create a new Sprite using the texture
-			var bunny = new PIXI.Sprite(texture);
+			// Play button
+			var playButtonTexture = PIXI.Texture.fromImage('Resources/Public/Images/play-now-button.png');
+			var playButton = new PIXI.Sprite(playButtonTexture);
+			playButton.interactive = true;
+			playButton.on('mousedown', onPlayNowClick);
+			playButton.on('touchstart', onPlayNowClick);
+			playButton.position.x = 600;
+			playButton.position.y = 520;
 
-			// center the sprite's anchor point
-			bunny.anchor.x = 0.5;
-			bunny.anchor.y = 0.5;
-
-			// Move the sprite to the center of the screen
-			bunny.position.x = 200;
-			bunny.position.y = 150;
-
-			stage.addChild(bunny);
+			// Add all elements to the stage
+			stage.addChild(slotMachineBackground);
+			stage.addChild(playButton);
 
 			// Start animating
 			animate();
 			function animate() {
 				requestAnimationFrame(animate);
-				bunny.rotation += 0.1;
+
+				//bunny.rotation += 0.1;
+
 				renderer.render(stage);
+			}
+
+			/**
+			 * On play button click events
+			 *
+			 * @param eventData
+			 */
+			function onPlayNowClick(eventData) {
+				console.log(eventData);
+				//sprite.scale.x += 0.3;
+				//sprite.scale.y += 0.3;
 			}
 		</script>
 	</body>
