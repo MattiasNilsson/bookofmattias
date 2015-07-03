@@ -20,6 +20,8 @@
 			// create the root of the scene graph
 			var stage = new PIXI.Container();
 
+			PIXI.loader.add('spritesheet', 'http://pixijs.github.io/examples/_assets/mc.json');
+
 			// Slot machine background button
 			var slotMachineBackgroundTexture = PIXI.Texture.fromImage(resourcePath + 'slot-machine-background.png');
 			var slotMachineBackground = new PIXI.Sprite(slotMachineBackgroundTexture);
@@ -83,6 +85,54 @@
 			}
 
 			/**
+			 * Start win animation
+			 */
+			function startWinAnimation() {
+				PIXI.loader.load(winAnimation);
+			}
+
+			/**
+			 * End win animation
+			 */
+			function stopWinAnimation() {
+				window.location.reload();
+			}
+
+			/**
+			 * The win animation
+			 */
+			function winAnimation() {
+				// Create an array to store the textures
+				var explosionTextures = [],
+					i;
+
+				for (i = 0; i < 26; i++) {
+					var texture = PIXI.Texture.fromFrame('Explosion_Sequence_A ' + (i+1) + '.png');
+					explosionTextures.push(texture);
+				}
+
+				for (i = 0; i < 50; i++) {
+					// Create an explosion MovieClip
+					var explosion = new PIXI.extras.MovieClip(explosionTextures);
+
+					explosion.position.x = Math.random() * 800;
+					explosion.position.y = Math.random() * 600;
+					explosion.anchor.x = 0.5;
+					explosion.anchor.y = 0.5;
+
+					explosion.rotation = Math.random() * Math.PI;
+
+					explosion.scale.set(0.75 + Math.random() * 0.5);
+
+					explosion.gotoAndPlay(Math.random() * 27);
+
+					stage.addChild(explosion);
+				}
+
+				requestAnimationFrame(animate);
+			}
+
+			/**
 			 * On play button click events
 			 *
 			 * @param eventData
@@ -107,6 +157,13 @@
 						reelOne.texture = updatedReelOneTexture;
 						reelTwo.texture = updatedReelTwoTexture;
 						reelThree.texture = updatedReelThreeTexture;
+
+						if (data.won > 0) {
+							startWinAnimation()
+							setTimeout(function() {
+								stopWinAnimation();
+							}, 3000);
+						}
 					}
 				});
 			}
@@ -126,8 +183,8 @@
 					type: 'GET',
 					url: '../index.php/bank',
 					async: false,
-					dataType: "json",
-					success: function(data){
+					dataType: 'json',
+					success: function(data) {
 						amount.text = 'Amount: ' + data['bank'];
 					}
 				});
@@ -136,7 +193,7 @@
 			/**
 			 * Function to handle the different z-index changes
 			 */
-			stage.updateLayersOrder = function () {
+			stage.updateLayersOrder = function() {
 				stage.children.sort(function(a,b) {
 					a.zIndex = a.zIndex || 0;
 					b.zIndex = b.zIndex || 0;
