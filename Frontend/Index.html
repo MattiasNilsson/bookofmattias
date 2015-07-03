@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="//cdn.jsdelivr.net/howler.js/1.1.26/howler.min.js"></script>
 		<script type="text/javascript" src="../Resources/Public/JavaScript/pixi.js"></script>
 	</head>
 	<body>
@@ -17,6 +18,8 @@
 			var cheat = false;
 			var renderer = PIXI.autoDetectRenderer(800, 600, {backgroundColor : 0x1099bb});
 			document.body.appendChild(renderer.view);
+
+            var backgroundSound;
 
 			// create the root of the scene graph
 			var stage = new PIXI.Container();
@@ -70,12 +73,21 @@
 			amount.position.x = 260;
 			amount.position.y = 523;
 
+            // The amount on the machine
+            var winning = new PIXI.Text('', {
+                font: '50px Arial',
+                fill: 'gold'
+            });
+            winning.position.x = 250;
+            winning.position.y = 30;
+
 			// Add all elements to the stage
 			stage.addChild(slotMachineBackground);
 			stage.addChild(reelOne);
 			stage.addChild(reelTwo);
 			stage.addChild(reelThree);
 			stage.addChild(amount);
+            stage.addChild(winning);
 			stage.addChild(playButton);
 
 			// Start animating
@@ -139,7 +151,8 @@
 			 * @param eventData
 			 */
 			function onPlayNowClick(eventData) {
-				getSpins();
+				playSound('spin.wav');
+                getSpins();
 				updateBankroll();
 			}
 
@@ -160,12 +173,20 @@
 						reelThree.texture = updatedReelThreeTexture;
 
 						if (data.won > 0 && data.won < 5) {
-							startWinAnimation()
+                            winning.text = 'You won ' + data.won;
+                            setTimeout(function() {
+                                startWinAnimation();
+                            }, 1000);
 							setTimeout(function() {
 								stopWinAnimation();
 							}, 3000);
 						} else if (data.won >= 5 || cheat == true) {
-							startWinAnimation()
+                            backgroundSound.stop();
+                            playSound('jackpot.mp3');
+                            winning.text = 'You won ' + data.won;
+                            setTimeout(function() {
+                                startWinAnimation();
+                            }, 1000);
 							setTimeout(function() {
 								stopWinAnimation();
 							}, 10000);
@@ -211,6 +232,9 @@
 
 			$(function() {
 				updateBankroll();
+                backgroundSound = new Howl({
+                    urls: ['../Resources/Public/Sounds/background.mp3']
+                }).play();
 
 				$(document).keypress(function(event) {
 					var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -221,6 +245,13 @@
 					}
 				});
 			});
+
+            function playSound(sound){
+                var playSound = new Howl({
+                    urls: ['../Resources/Public/Sounds/' + sound]
+                }).play();
+            }
+
 		</script>
 	</body>
 </html>
