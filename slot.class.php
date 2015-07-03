@@ -19,19 +19,6 @@ class Slot {
         }
     }
 
-    private function getWin($intWin) {
-        $intReturn = 0;
-        switch($intWin) {
-            case 0:
-                $intReturn = 100;
-                break;
-            case 1:
-                $intReturn = 50;
-                break;
-        }
-        return $intReturn;
-    }
-
     public function getSpin() {
         $this->setBank(-1);
         $arrSpin = array();
@@ -42,9 +29,14 @@ class Slot {
 
         $intWon = 0;
         if($arrSpin[0] == $arrSpin[1] && $arrSpin[1] == $arrSpin[2]) {
-            $intWon = $this->getWin($arrSpin[0]);
-            $this->setBank($intWon);
+            // Same symbol on all three reels
+            $intWon = $this->getWin(3, $arrSpin[0]);
         }
+        else if($arrSpin[0] == $arrSpin[1]) {
+            // Same symbol on reel 1 and 2
+            $intWon = $this->getWin(2, $arrSpin[0]);
+        }
+        $this->setBank($intWon);
 
         $arrReturn = array(
             'reels' => $arrSpin,
@@ -52,7 +44,18 @@ class Slot {
         );
 
         return($arrReturn);
+    }
 
+    private function getWin($intReelsAlike, $intSymbol) {
+        $arrPayouts = array(
+            2 => array(
+                3, 4, 6, 8, 10
+            ),
+            3 => array(
+                8, 12, 20, 35, 50
+            )
+        );
+        return $arrPayouts[$intReelsAlike][$intSymbol];
     }
 
     private function setBank($intAmount) {
