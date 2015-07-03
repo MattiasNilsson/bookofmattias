@@ -43,6 +43,8 @@ class Slot {
             'won'   => $intWon
         );
 
+		$this->setSpin($arrReturn);
+
         return($arrReturn);
     }
 
@@ -57,6 +59,14 @@ class Slot {
         );
         return $arrPayouts[$intReelsAlike][$intSymbol];
     }
+
+	private function setSpin($spinHistory) {
+		$_SESSION['spin'] = $spinHistory;
+	}
+
+	public function getSpinHistory() {
+		return array('spin' => $_SESSION['spin']);
+	}
 
     private function setBank($intAmount) {
         $_SESSION['bank'] = $_SESSION['bank'] + $intAmount;

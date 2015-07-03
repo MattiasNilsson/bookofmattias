@@ -19,6 +19,11 @@ $app->get('/spin', function () {
     echo json_encode($objSlot->getSpin());
 });
 
+$app->get('/spin/history', function () {
+	global $objSlot;
+	echo json_encode($objSlot->getSpinHistory());
+});
+
 $app->get('/bank', function () {
     global $objSlot;
     echo json_encode($objSlot->getBank());
