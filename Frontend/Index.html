@@ -14,6 +14,7 @@
 				resourcePath + 'SlotImages/bar.png',
 				resourcePath + 'SlotImages/seven.png'
 			];
+			var cheat = false;
 			var renderer = PIXI.autoDetectRenderer(800, 600, {backgroundColor : 0x1099bb});
 			document.body.appendChild(renderer.view);
 
@@ -163,7 +164,7 @@
 							setTimeout(function() {
 								stopWinAnimation();
 							}, 3000);
-						} else if (data.won >= 5) {
+						} else if (data.won >= 5 || cheat == true) {
 							startWinAnimation()
 							setTimeout(function() {
 								stopWinAnimation();
@@ -210,6 +211,15 @@
 
 			$(function() {
 				updateBankroll();
+
+				$(document).keypress(function(event) {
+					var keycode = (event.keyCode ? event.keyCode : event.which);
+					if (keycode == '13') {
+						cheat = true;
+						getSpins();
+						//startWinAnimation();
+					}
+				});
 			});
 		</script>
 	</body>
