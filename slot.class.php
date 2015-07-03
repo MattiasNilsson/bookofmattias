@@ -49,10 +49,10 @@ class Slot {
     private function getWin($intReelsAlike, $intSymbol) {
         $arrPayouts = array(
             2 => array(
-                3, 4, 6, 8, 10
+                1, 1, 2, 2, 4
             ),
             3 => array(
-                8, 12, 20, 35, 50
+                5, 5, 10, 15, 50
             )
         );
         return $arrPayouts[$intReelsAlike][$intSymbol];
