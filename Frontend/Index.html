@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<script type="text/javascript" src="Resources/Public/JavaScript/pixi.js"></script>
+		<script type="text/javascript" src="../Resources/Public/JavaScript/pixi.js"></script>
 	</head>
 	<body>
 		<script type="text/javascript">
@@ -11,13 +11,13 @@
 			var stage = new PIXI.Container();
 
 			// Slot machine background button
-			var slotMachineBackgroundTexture = PIXI.Texture.fromImage('Resources/Public/Images/slot-machine-background.png');
+			var slotMachineBackgroundTexture = PIXI.Texture.fromImage('../Resources/Public/Images/slot-machine-background.png');
 			var slotMachineBackground = new PIXI.Sprite(slotMachineBackgroundTexture);
 			slotMachineBackground.position.x = 165;
 			slotMachineBackground.position.y = 100;
 
 			// Play button
-			var playButtonTexture = PIXI.Texture.fromImage('Resources/Public/Images/play-now-button.png');
+			var playButtonTexture = PIXI.Texture.fromImage('../Resources/Public/Images/play-now-button.png');
 			var playButton = new PIXI.Sprite(playButtonTexture);
 			playButton.interactive = true;
 			playButton.on('mousedown', onPlayNowClick);
