@@ -4,6 +4,15 @@
 	</head>
 	<body>
 		<script type="text/javascript">
+			var numberOfValuesInReel = 5;
+			var resourcePath = '../Resources/Public/Images/';
+			var slotImages = [
+				resourcePath + 'SlotImages/bar.png',
+				resourcePath + 'SlotImages/cherry.png',
+				resourcePath + 'SlotImages/clock.png',
+				resourcePath + 'SlotImages/seven.png',
+				resourcePath + 'SlotImages/watermelon.png'
+			];
 			var renderer = PIXI.autoDetectRenderer(800, 600,{backgroundColor : 0x1099bb});
 			document.body.appendChild(renderer.view);
 
@@ -11,13 +20,37 @@
 			var stage = new PIXI.Container();
 
 			// Slot machine background button
-			var slotMachineBackgroundTexture = PIXI.Texture.fromImage('../Resources/Public/Images/slot-machine-background.png');
+			var slotMachineBackgroundTexture = PIXI.Texture.fromImage(resourcePath + 'slot-machine-background.png');
 			var slotMachineBackground = new PIXI.Sprite(slotMachineBackgroundTexture);
+			slotMachineBackground.zIndex = 10;
 			slotMachineBackground.position.x = 165;
 			slotMachineBackground.position.y = 100;
 
+			// Reel one
+			var reelOneTexture = PIXI.Texture.fromImage(shuffleArray(slotImages));
+			var reelOne = new PIXI.Sprite(reelOneTexture);
+			reelOne.zIndex = 100;
+			reelOne.position.x = 195;
+			reelOne.position.y = 220;
+
+			// Reel two
+			var reelTwoTexture = PIXI.Texture.fromImage(shuffleArray(slotImages));
+			var reelTwo = new PIXI.Sprite(reelTwoTexture);
+			reelTwo.interactive = true;
+			reelTwo.zIndex = reelOne.zIndex;
+			reelTwo.position.x = 312;
+			reelTwo.position.y = 220;
+
+			// Reel three
+			var reelThreeTexture = PIXI.Texture.fromImage(shuffleArray(slotImages));
+			var reelThree = new PIXI.Sprite(reelThreeTexture);
+			reelThree.interactive = true;
+			reelThree.zIndex = 100;
+			reelThree.position.x = 427;
+			reelThree.position.y = 220;
+
 			// Play button
-			var playButtonTexture = PIXI.Texture.fromImage('../Resources/Public/Images/play-now-button.png');
+			var playButtonTexture = PIXI.Texture.fromImage(resourcePath + 'play-now-button.png');
 			var playButton = new PIXI.Sprite(playButtonTexture);
 			playButton.interactive = true;
 			playButton.on('mousedown', onPlayNowClick);
@@ -25,8 +58,20 @@
 			playButton.position.x = 600;
 			playButton.position.y = 520;
 
+			// The amount on the machine
+			var amount = new PIXI.Text('Amount: 0', {
+				font: '50px Arial',
+				fill: 'gold'
+			});
+			amount.position.x = 260;
+			amount.position.y = 523;
+
 			// Add all elements to the stage
 			stage.addChild(slotMachineBackground);
+			stage.addChild(reelOne);
+			stage.addChild(reelTwo);
+			stage.addChild(reelThree);
+			stage.addChild(amount);
 			stage.addChild(playButton);
 
 			// Start animating
@@ -34,7 +79,7 @@
 			function animate() {
 				requestAnimationFrame(animate);
 
-				//bunny.rotation += 0.1;
+				//reelOne.rotation += 0.1;
 
 				renderer.render(stage);
 			}
@@ -45,10 +90,45 @@
 			 * @param eventData
 			 */
 			function onPlayNowClick(eventData) {
+				generateLoadingImagesForReels();
+				reelOne.rotation += 0.1;
+				//reelOne.update();
+				animate();
 				console.log(eventData);
 				//sprite.scale.x += 0.3;
 				//sprite.scale.y += 0.3;
 			}
+
+			/**
+			 * Generate loading images for reels
+			 */
+			function generateLoadingImagesForReels() {
+				//reelOneTexture = PIXI.Texture.fromImage(resourcePath + 'SlotImages/preloader.gif');
+				//reelOne = new PIXI.Sprite(reelOneTexture);
+				//stage.addChild(reelOne);
+				//stage.worldTransform();
+				//animate();
+			}
+
+			/**
+			 * Randomize array element order in-place.
+			 */
+			function shuffleArray(array) {
+				return array[Math.floor(Math.random() * numberOfValuesInReel)];
+			}
+
+			/**
+			 * Function to handle the different z-index changes
+			 */
+			stage.updateLayersOrder = function () {
+				stage.children.sort(function(a,b) {
+					a.zIndex = a.zIndex || 0;
+					b.zIndex = b.zIndex || 0;
+					return b.zIndex - a.zIndex
+				});
+			};
+
+			stage.updateLayersOrder();
 		</script>
 	</body>
 </html>
