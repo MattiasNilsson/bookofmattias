@@ -8,6 +8,7 @@
 
 require_once('vendor/autoload.php');
 $app = new \Slim\Slim();
+$app->response->headers->set('Content-Type', 'application/json');
 
 // Load the Slots class
 require_once('slot.class.php');

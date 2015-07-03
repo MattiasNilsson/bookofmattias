@@ -79,9 +79,6 @@
 			animate();
 			function animate() {
 				requestAnimationFrame(animate);
-
-				//reelOne.rotation += 0.1;
-
 				renderer.render(stage);
 			}
 
@@ -92,12 +89,9 @@
 			 */
 			function onPlayNowClick(eventData) {
 				generateLoadingImagesForReels();
-				reelOne.rotation += 0.1;
-				//reelOne.update();
-				animate();
+				getSpins();
+				//animate();
 				console.log(eventData);
-				//sprite.scale.x += 0.3;
-				//sprite.scale.y += 0.3;
 			}
 
 			/**
@@ -109,6 +103,19 @@
 				//stage.addChild(reelOne);
 				//stage.worldTransform();
 				//animate();
+			}
+
+			/**
+			 * Get the spins from the API
+			 */
+			function getSpins() {
+				$.ajax({
+					url: '../index.php/spin'
+				}).done(function(data) {
+					if (data) {
+						console.log(data.reels);
+					}
+				});
 			}
 
 			/**
