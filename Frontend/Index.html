@@ -66,7 +66,7 @@
 			playButton.position.y = 520;
 
 			// The amount on the machine
-			var amount = new PIXI.Text('Amount: 0', {
+			var amount = new PIXI.Text('Amount: $0', {
 				font: '50px Arial',
 				fill: 'gold'
 			});
@@ -173,7 +173,7 @@
 						reelThree.texture = updatedReelThreeTexture;
 
 						if (data.won > 0 && data.won < 5) {
-                            winning.text = 'You won ' + data.won;
+                            winning.text = 'You won $' + data.won;
                             setTimeout(function() {
                                 startWinAnimation();
                             }, 1000);
@@ -183,7 +183,7 @@
 						} else if (data.won >= 5 || cheat == true) {
                             backgroundSound.stop();
                             playSound('jackpot.mp3');
-                            winning.text = 'You won ' + data.won;
+                            winning.text = 'You won $' + data.won;
                             setTimeout(function() {
                                 startWinAnimation();
                             }, 1000);
@@ -212,7 +212,7 @@
 					async: false,
 					dataType: 'json',
 					success: function(data) {
-						amount.text = 'Amount: ' + data['bank'];
+						amount.text = 'Amount: $' + data['bank'];
 					}
 				});
 			}
