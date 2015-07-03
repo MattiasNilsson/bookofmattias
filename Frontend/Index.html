@@ -92,6 +92,8 @@
 				getSpins();
 				//animate();
 				console.log(eventData);
+
+                updateBankroll();
 			}
 
 			/**
@@ -124,6 +126,21 @@
 			function shuffleArray(array) {
 				return array[Math.floor(Math.random() * numberOfValuesInReel)];
 			}
+
+            /**
+             * Get the bank roll amount
+             */
+            function updateBankroll() {
+                $.ajax({
+                    type: 'GET',
+                    url: '../index.php/bank',
+                    async: false,
+                    dataType: "json",
+                    success: function(data){
+                        amount.text = data['bank'];
+                    }
+                });
+            }
 
 			/**
 			 * Function to handle the different z-index changes
