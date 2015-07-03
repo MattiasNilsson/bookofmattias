@@ -60,6 +60,6 @@ class Slot {
     }
 
     public function getBank() {
-        return $_SESSION['bank'];
+        return array('bank' => $_SESSION['bank']);
     }
 }
